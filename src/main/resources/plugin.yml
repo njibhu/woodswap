@@ -9,3 +9,7 @@ commands:
   woodswap:
     description: "Swap wood blocks"
     permission: woodswap.swap
+    usage: |
+      /woodswap [sourceWood] [targetWood]
+      wood can be: acacia, birch, dark_oak, jungle, oak, spruce
+

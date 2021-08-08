@@ -5,6 +5,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import kotlinx.coroutines.*
 
 class SwapCommandListener: CommandExecutor{
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -40,22 +41,27 @@ class SwapCommandListener: CommandExecutor{
             return true
         }
 
-        val editSession =  WorldEdit.getInstance().newEditSession(actor)
-        val sourceWoodBlocks = getBlockTypes(sourceWood.type);
-        val targetWoodBlocks = getBlockTypes(targetWood.type);
+        runBlocking {
+            launch {
+                val editSession =  WorldEdit.getInstance().newEditSession(actor)
+                val sourceWoodBlocks = getBlockTypes(sourceWood.type);
+                val targetWoodBlocks = getBlockTypes(targetWood.type);
 
-        localSession.selection.forEach {
-            val block = selectionWorld.getBlock(it)
-            val index = sourceWoodBlocks.indexOf(block.blockType)
-            if (index > -1){
-                val equivalentBlock = targetWoodBlocks[index]
-                editSession.setBlock(it, equivalentBlock.getState(block.states))
+                localSession.selection.forEach {
+                    val block = selectionWorld.getBlock(it)
+                    val index = sourceWoodBlocks.indexOf(block.blockType)
+                    if (index > -1){
+                        val equivalentBlock = targetWoodBlocks[index]
+                        editSession.setBlock(it, equivalentBlock.getState(block.states))
+                    }
+                }
+                editSession.close()
+                localSession.remember(editSession)
+                sender.sendMessage("/woodswap ${args[0]} ${args[1]} done")
             }
         }
-        editSession.close()
-        localSession.remember(editSession)
-        sender.sendMessage("/woodswap ${args[0]} ${args[1]} done")
 
         return true
     }
+
 }

@@ -2,7 +2,7 @@
 A spigot plugin to worldedit letting player to use a command to swap wood blocks types
 
 ## Requirements
-- Spigot >= 16.4
+- Spigot >= 1.16.4
 - WorldEdit >= 7.2.5
 
 ## Usage

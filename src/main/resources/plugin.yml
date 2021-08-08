@@ -1,0 +1,11 @@
+name: Woodswap
+version: ${project.version}
+main: com.github.njibhu.woodswap.Woodswap
+api-version: 1.16
+author: Njibhu
+depend:
+  - WorldEdit
+commands:
+  woodswap:
+    description: "Swap wood blocks"
+    permission: woodswap.swap
